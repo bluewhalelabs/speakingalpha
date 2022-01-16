@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>NFT Test</title>
+
+		<script>
+			const address = '0xA097Ef0F02Ad73B6425Fee3809104B5Ac5C452D7';
+
+			const options = {
+				method: 'GET',
+				headers: { Accept: 'application/json' },
+			};
+
+			async function getNFTs_OS() {
+				const response = await fetch(
+					`https://api.opensea.io/api/v1/assets?owner=${address}&order_direction=desc&offset=0&limit=50`,
+					options
+				);
+
+				const json = await response.json();
+				const nfts = await json.assets;
+				const contracts = new Map();
+
+				nfts.forEach((nft) => {
+					if (!contracts.has(nft.asset_contract.address)) {
+						contracts.set(nft.asset_contract.address, nft.asset_contract);
+					}
+				});
+
+				console.log(nfts);
+				console.log(contracts);
+
+				return nfts;
+			}
+		</script>
+
+		<link rel="stylesheet" href="styles/styles.css" />
+
+		<link
+			href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css"
+			rel="stylesheet"
+		/>
+	</head>
+	<body
+		style="display: grid; place-content: center; height: 100vh; width: 100%"
+	>
+		<div class="dialog">
+			<header>
+				<h4>Share This Alpha</h4>
+				<a href="#"><i class="bx bx-x"></i></a>
+			</header>
+			<div class="content">
+				<div class="nfts">
+					<h5>NFTs</h5>
+					<p>Anyone holding these NFTs</p>
+					<ul>
+						<li>
+							<label><input type="checkbox" /> Collection Name</label>
+						</li>
+						<li>
+							<label><input type="checkbox" /> Collection Name</label>
+						</li>
+						<li>
+							<label><input type="checkbox" /> Collection Name</label>
+						</li>
+						<li>
+							<label><input type="checkbox" /> Collection Name</label>
+						</li>
+					</ul>
+				</div>
+
+				<div class="wallets">
+					<h5>Wallets</h5>
+					<p>These specific wallets</p>
+
+					<ul>
+						<li>
+							<input type="text" value="Ax090000000" disabled />
+							<a href="#"><i class="bx bx-trash"></i></a>
+						</li>
+						<li>
+							<input type="text" placeholder="enter wallet address" />
+							<a href="#"><i class="bx bx-plus-circle"></i></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<footer>
+				<button>Save Settings</button>
+				<a href="#">Cancel</a>
+			</footer>
+		</div>
+	</body>
+</html>
